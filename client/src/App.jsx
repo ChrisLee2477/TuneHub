@@ -7,17 +7,23 @@ import Spotify from "../src/components/Spotify";
 import Chat from "./components/Chat";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-function App() {
-  const [count, setCount] = useState(0);
+import Dashspot from "./components/SpotifyDash";
 
-  return (
-    <>
-      <Chat />
-      <Login />
-      <Signup />
-      <Spotify />
-    </>
-  );
+function App() {
+  const code = new URLSearchParams(window.location.search).get("code");
+
+  return code ? <Dashspot code={code} /> : <Spotify />;
+  // (
+
+  //   (
+  //     <>
+  //       <Chat />
+  //       <Login />
+  //       <Signup />
+  //       <Spotify />
+  //     </>
+  //   )
+  // );
 }
 
 export default App;

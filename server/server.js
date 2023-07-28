@@ -6,7 +6,7 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const spotifyWebApi = require("soptify-web-api-node");
+const SpotifyWebApi = require("spotify-web-api-node");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
@@ -21,25 +21,26 @@ const server = http.createServer(app);
 
 // Spotify Web API
 
-app
-  .post("/spotifylogin", (req, res) => {
-    const spotifyApi = new SpotifyWebApi({
-      redirectUri: "http://localhost:3000/",
-      clientId: "d67a6de2b2f045539acfef33cdff8840",
-      clientSecret: "bd98e8446154499ab7eef56762cd16f2",
-    });
+app.post("/spotifylogin", (req, res) => {
+  const spotifyApi = new SpotifyWebApi({
+    redirectUri: "http://localhost:3000/",
+    clientId: "d67a6de2b2f045539acfef33cdff8840",
+    clientSecret: "bd98e8446154499ab7eef56762cd16f2",
+  });
 
-    spotifyApi.authorizationCodeGrant(code).then((data) => {
+  spotifyApi
+    .authorizationCodeGrant(code)
+    .then((data) => {
       res.json({
         accessToken: data.body.access_token,
         refreshToken: data.body.refresh_token,
         expiresIn: data.body.expires_in,
       });
+    })
+    .catch((err) => {
+      res.sendStatus(400);
     });
-  })
-  .catch(() => {
-    res.sendStatus(400);
-  });
+});
 
 const io = new Server(server, {
   cors: {
@@ -62,6 +63,11 @@ io.on("connection", (socket) => {
 server.listen(3002, () => {
   console.log("SERVER IS RUNNING");
 });
+
+// spot
+app.listen(3001);
+// spot
+
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
   await apolloServer.start();
