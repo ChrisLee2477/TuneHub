@@ -9,7 +9,7 @@ const cors = require("cors");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
@@ -35,6 +35,9 @@ io.on("connection", (socket) => {
   socket.on("send_message", (data) => {
     socket.to(data.room).emit("receive_message", data);
   });
+});
+server.listen(3002, () => {
+  console.log("SERVER IS RUNNING");
 });
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
