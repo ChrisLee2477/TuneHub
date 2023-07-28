@@ -1,10 +1,19 @@
 const express = require("express");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
+const path = require("path");
 const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
+const { typeDefs, resolvers } = require("./schemas");
+const db = require("./config/connection");
+
+const PORT = process.env.PORT || 3001;
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
 
 app.use(cors());
 const server = http.createServer(app);
