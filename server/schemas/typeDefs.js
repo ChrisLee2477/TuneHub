@@ -7,35 +7,35 @@ const typeDefs = `
     
   }
  
-  type Song = {
-    _id: string!
-    title: string!
-    artist: string!
-    album: string!
-    duration: int!
+  type Song  {
+    _id: String
+    title: String
+    artist: String
+    album: String
+    duration: Int
   }
 
-  type Playlist = {
-    _id: string!
-    name: string!
-    creator: User!
-    songs: [Song!]!
+  type Playlist  {
+    _id: String
+    name: String
+    creator: User
+    songs: [Song]!
   }
 
   type Comment {
-    _id: ID!
-    user: User!
-    content: String!
-    createdAt: Date!
+    _id: ID
+    user: User
+    content: String
+    createdAt: String
   }
 
   type Auth {
-    token: ID!
+    token: ID
     user: User
   }
   type Query {
-  getUserById(id: ID!): User
-  getAllSongs: [Song!]!
+  getUserById(_id: ID!): User
+  getAllSongs: [Song]!
   getPlaylistById(id: ID!): Playlist
  
 }

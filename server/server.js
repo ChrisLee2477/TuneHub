@@ -32,7 +32,20 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("receive_message", data);
   });
 });
+// Create a new instance of an Apollo server with the GraphQL schema
+const startApolloServer = async () => {
+  await apolloServer.start();
 
-server.listen(3001, () => {
-  console.log("SERVER IS RUNNING");
-});
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
+
+  app.use("/graphql", expressMiddleware(apolloServer, {}));
+
+  db.once("open", () => {
+    app.listen(PORT, () => {
+      console.log(`API server running on port ${PORT}!`);
+      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+    });
+  });
+};
+startApolloServer();
