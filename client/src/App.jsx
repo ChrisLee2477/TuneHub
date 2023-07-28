@@ -8,16 +8,41 @@ import Chat from "./components/Chat";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Nav from "./components/Nav";
+import React from "react";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./pages/Dashboard.jsx";
+import About from "./pages/About.jsx";
+import Analytics from "./pages/Analytics.jsx";
+import Comment from "./pages/Comment.jsx";
+import Product from "./pages/Product.jsx";
+import ProductList from "./pages/ProductList.jsx";
+
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <Nav />
+      {/* <Nav />
       <Chat />
       <Login />
       <Signup />
-      <Spotify />
+      <Spotify /> */}
+
+      <BrowserRouter>
+        <Sidebar>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/comment" element={<Comment />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/productList" element={<ProductList />} />
+          </Routes>
+        </Sidebar>
+      </BrowserRouter>
     </>
   );
 }
