@@ -26,7 +26,7 @@ const typeDefs = `
     _id: ID!
     user: User!
     content: String!
-    timestamp: String!
+    createdAt: Date!
   }
 
   type Auth {
