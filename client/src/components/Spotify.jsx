@@ -14,7 +14,6 @@ export default function Spotify() {
       <a className="btn btn-success btn-lg" href={AUTH_URL}>
         Login with Spotify
       </a>
-      ;
     </Container>
   );
 }

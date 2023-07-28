@@ -1,3 +1,5 @@
+// ==== [Vars] ====
+
 const express = require("express");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
@@ -9,17 +11,25 @@ const cors = require("cors");
 const SpotifyWebApi = require("spotify-web-api-node");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
+const bodyParser = require("body-parser");
+
+// ==== [Env] ====
 
 const PORT = process.env.PORT || 3000;
+
+// ==== [Server] ====
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
+// ==== [Cors] ====
 app.use(cors());
 const server = http.createServer(app);
 
-// Spotify Web API
+//==== [Spotify] ====
+
+app.use(bodyParser.json());
 
 app.post("/spotifylogin", (req, res) => {
   const spotifyApi = new SpotifyWebApi({
@@ -38,9 +48,12 @@ app.post("/spotifylogin", (req, res) => {
       });
     })
     .catch((err) => {
+      console.log(err);
       res.sendStatus(400);
     });
 });
+
+// ==== [Socket.io] ====
 
 const io = new Server(server, {
   cors: {
@@ -63,10 +76,6 @@ io.on("connection", (socket) => {
 server.listen(3002, () => {
   console.log("SERVER IS RUNNING");
 });
-
-// spot
-app.listen(3001);
-// spot
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
