@@ -4,11 +4,17 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Spotify from "../src/components/Spotify";
+import Chat from "./components/Chat";
 
 function App() {
   const [count, setCount] = useState(0);
 
-  return <Spotify />;
+  return (
+    <>
+      <Chat />
+      <Spotify />
+    </>
+  );
 }
 
 export default App;
