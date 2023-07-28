@@ -1,11 +1,10 @@
 import React from "react";
+import Chat from "../components/Chat";
 
-const Comment = () => {
+export default function Comment() {
   return (
-    <div>
-      <h1>Comment page</h1>
-    </div>
+    <>
+      <Chat />
+    </>
   );
-};
-
-export default Comment;
+}

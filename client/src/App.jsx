@@ -14,7 +14,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard.jsx";
 import SignupPage from "./pages/SignupPage";
-import Analytics from "./pages/Analytics.jsx";
+import SpotifyPage from "./pages/SpotifyPage";
 import Comment from "./pages/Comment.jsx";
 import Product from "./pages/Product.jsx";
 import ProductList from "./pages/ProductList.jsx";
@@ -37,7 +37,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/signuppage" element={<SignupPage />} />
             <Route path="/comment" element={<Comment />} />
-            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/spotifypage" element={<SpotifyPage />} />
             <Route path="/product" element={<Product />} />
             <Route path="/productList" element={<ProductList />} />
           </Routes>
