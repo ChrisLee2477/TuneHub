@@ -4,9 +4,14 @@ import Form from "react-bootstrap/Form";
 export default function Login() {
   return (
     <Form>
-      <Form.Group className="mb-3" controlId="formName">
-        <Form.Label>Name:</Form.Label>
-        <Form.Control type="User" placeholder="Full Name" />
+      <Form.Group className="mb-3" controlId="formFirstName">
+        <Form.Label>First Name:</Form.Label>
+        <Form.Control type="User" placeholder="First Name" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formLastName">
+        <Form.Label>Last Name:</Form.Label>
+        <Form.Control type="User" placeholder="Last Name" />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicEmail">
