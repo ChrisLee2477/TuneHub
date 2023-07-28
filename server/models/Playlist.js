@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const playlistSchema = new mongoose.Schema({
+const playlistSchema = new Schema({
   name: { type: String, required: true },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
@@ -12,6 +12,6 @@ const playlistSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const Playlist = mongoose.model("Playlist", playlistSchema);
+const Playlist = model("Playlist", playlistSchema);
 
 module.exports = Playlist;
