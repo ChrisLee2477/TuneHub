@@ -8,22 +8,20 @@ import Chat from "./components/Chat";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashspot from "./components/SpotifyDash";
-
+import Nav from "./components/Nav";
 function App() {
   const code = new URLSearchParams(window.location.search).get("code");
 
   return code ? <Dashspot code={code} /> : <Spotify />;
-  // (
-
-  //   (
+  //  (
   //     <>
+  //       <Nav />
   //       <Chat />
   //       <Login />
   //       <Signup />
   //       <Spotify />
   //     </>
-  //   )
-  // );
+  //   );
 }
 
 export default App;
