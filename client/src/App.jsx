@@ -5,6 +5,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Spotify from "../src/components/Spotify";
 import Chat from "./components/Chat";
+import Login from "./components/Login";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,6 +13,7 @@ function App() {
   return (
     <>
       <Chat />
+      <Login />
       <Spotify />
     </>
   );
