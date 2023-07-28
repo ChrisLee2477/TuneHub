@@ -1,11 +1,10 @@
 import React from "react";
+import Login from "../components/Login";
 
-const Dashboard = () => {
+export default function Dashboard() {
   return (
-    <div>
-      <h1>dashboard page</h1>
-    </div>
+    <>
+      <Login />
+    </>
   );
-};
-
-export default Dashboard;
+}
