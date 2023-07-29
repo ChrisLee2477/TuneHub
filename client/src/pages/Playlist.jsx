@@ -1,9 +1,9 @@
 import React from "react";
 
-const Product = () => {
+const playlist = () => {
   return (
     <div>
-      <h1>product page</h1>
+      <h1>playlist page</h1>
     </div>
   );
 };
