@@ -2,6 +2,7 @@ const express = require("express");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const path = require("path");
+const { authMiddleware } = require("./utils/auth");
 const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
@@ -69,7 +70,12 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
-  app.use("/graphql", expressMiddleware(apolloServer, {}));
+  app.use(
+    "/graphql",
+    expressMiddleware(apolloServer, {
+      context: authMiddleware,
+    })
+  );
 
   db.once("open", () => {
     app.listen(PORT, () => {
