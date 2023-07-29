@@ -1,15 +1,12 @@
 import { gql } from "@apollo/client";
 
 export const ADD_PLAYLIST = gql`
-  mutation addplaylist($name: String!, $creator:Schema.Types.ObjectId!, $songs: Schema.Types.ObjectId!) {
-    addaddPlaylist(name: $name, creator: $creator, songs: $songs) {
-      token
-      playlist {
-        _id
-        name
-        creator
-        song
-      }
+  mutation addPlaylist($name: String!, $creator: String!, $songs: String!) {
+    addPlaylist(name: $name, creator: $creator, songs: $songs) {
+      _id
+      name
+      creator
+      song
     }
   }
 `;
@@ -20,10 +17,10 @@ export const ADD_SONG = gql`
     $title: String!
     $artist: String!
     $album: String!
-    $duration: Number!
+    $duration: Int!
   ) {
     addSong(
-      userid: $userId
+      userId: $userId
       title: $title
       artist: $artist
       album: $album
@@ -38,18 +35,10 @@ export const ADD_SONG = gql`
     }
   }
 `;
+
 export const ADD_COMMENT = gql`
-  mutation addComment(
-    $user: Schema.Types.ObjectId
-    $content: String!
-    $createdAt: Date!
-   
-  ) {
-    addComment(
-      user: $user
-      content: $content
-      createdAt: $createdAt
-    ) {
+  mutation addComment($user: String, $content: String!, $createdAt: String!) {
+    addComment(user: $user, content: $content, createdAt: $createdAt) {
       _id
       user
       content
@@ -57,6 +46,7 @@ export const ADD_COMMENT = gql`
     }
   }
 `;
+
 export const LOGIN_USER = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
@@ -75,10 +65,10 @@ export const REMOVE_SONG = gql`
     $title: String!
     $artist: String!
     $album: String!
-    $duration: Number!
+    $duration: Int!
   ) {
     removeSong(
-      userid: $userId
+      userId: $userId
       title: $title
       artist: $artist
       album: $album
@@ -93,18 +83,10 @@ export const REMOVE_SONG = gql`
     }
   }
 `;
+
 export const REMOVE_COMMENT = gql`
-  mutation addComment(
-    $user: Schema.Types.ObjectId
-    $content: String!
-    $createdAt: Date!
-   
-  ) {
-    addComment(
-      user: $user
-      content: $content
-      createdAt: $createdAt
-    ) {
+  mutation removeComment($commentId: ID!) {
+    removeComment(commentId: $commentId) {
       _id
       user
       content
