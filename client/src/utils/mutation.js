@@ -1,5 +1,14 @@
 import { gql } from "@apollo/client";
 
+export const SIGNUP_USER = gql`
+  mutation signupUser($username: String!, $email: String!, $password: String!) {
+    signupUser(username: $username, email: $email, password: $password) {
+      _id
+      username
+      email
+    }
+  }
+`;
 export const ADD_PLAYLIST = gql`
   mutation addPlaylist($name: String!, $creator: String!, $songs: String!) {
     addPlaylist(name: $name, creator: $creator, songs: $songs) {

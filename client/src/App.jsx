@@ -3,7 +3,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from "@ap
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard.jsx";
-import SignupPage from "./pages/SignupPage";
+import SignupPage from "./pages/Signup";
 import SpotifyPage from "./pages/SpotifyPage";
 import Comment from "./pages/Comment.jsx";
 import Playlist from "./pages/Playlist";
