@@ -1,0 +1,32 @@
+[
+    {
+      "name": "Chill Vibes",
+      "creator": "user1_id",
+      "songs": ["song1_id", "song2_id", "song3_id"],
+      "createdAt": "2023-07-28T12:34:56.789Z"
+    },
+    {
+      "name": "Best of Rock",
+      "creator": "user2_id",
+      "songs": ["song4_id", "song5_id", "song6_id"],
+      "createdAt": "2023-07-28T13:45:12.345Z"
+    },
+    {
+      "name": "Favorite Hits",
+      "creator": "user3_id",
+      "songs": ["song2_id", "song5_id", "song7_id"],
+      "createdAt": "2023-07-28T14:56:23.456Z"
+    },
+    {
+      "name": "Summer Party",
+      "creator": "user1_id",
+      "songs": ["song8_id", "song9_id", "song10_id"],
+      "createdAt": "2023-07-29T10:11:22.333Z"
+    },
+    {
+      "name": "Relaxing Piano",
+      "creator": "user2_id",
+      "songs": ["song11_id", "song12_id", "song13_id"],
+      "createdAt": "2023-07-29T11:22:33.444Z"
+    }
+  ]
