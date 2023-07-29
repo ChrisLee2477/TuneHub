@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
+const { signToken, AuthenticationError } = require("../utils/auth");
 const { User, Song, Playlist, Comment } = require("../models");
 
 const resolvers = {
@@ -24,7 +25,10 @@ const resolvers = {
         password,
       });
       await newUser.save();
-      return newUser;
+
+      const token = signToken({ userId: newUser._id });
+
+      return { user: newUser, token };
     },
     createSong: async (parent, args) => {
       const { title, artist, album, duration } = args;
@@ -81,6 +85,17 @@ const resolvers = {
 
       await newComment.save();
       return newComment;
+    },
+    login: async (parent, args) => {
+      const { email, password } = args;
+      const user = await User.findOne({ email });
+
+      if (!user || user.password !== password) {
+        throw new AuthenticationError("Invalid credentials");
+      }
+
+      const token = signToken({ userId: user._id });
+      return { user, token };
     },
   },
 };
