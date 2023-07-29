@@ -29,9 +29,9 @@ const typeDefs = `
     createdAt: String
   }
 
-  type Auth {
-    token: ID
-    user: User
+  type AuthPayload {
+    token: String!
+    profile: User!
   }
   type Query {
   getUserById(_id: ID!): User
