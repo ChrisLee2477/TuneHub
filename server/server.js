@@ -7,7 +7,7 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const spotifyWebApi = require("soptify-web-api-node");
+const spotifyApi = require("spotify-web-api-node");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
