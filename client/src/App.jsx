@@ -16,8 +16,8 @@ import Dashboard from "./pages/Dashboard.jsx";
 import SignupPage from "./pages/SignupPage";
 import SpotifyPage from "./pages/SpotifyPage";
 import Comment from "./pages/Comment.jsx";
-import Product from "./pages/Product.jsx";
-import ProductList from "./pages/ProductList.jsx";
+import Playlist from "./pages/Playlist";
+import Songs from "./pages/Songs";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -38,8 +38,8 @@ function App() {
             <Route path="/signuppage" element={<SignupPage />} />
             <Route path="/comment" element={<Comment />} />
             <Route path="/spotifypage" element={<SpotifyPage />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/productList" element={<ProductList />} />
+            <Route path="/playlist" element={<Playlist />} />
+            <Route path="/songs" element={<Songs />} />
           </Routes>
         </Sidebar>
       </BrowserRouter>
