@@ -20,7 +20,7 @@ const Sidebar = ({ children }) => {
       icon: <FaTh />,
     },
     {
-      path: "/signuppage",
+      path: "/signup",
       name: "Sign Up",
       icon: <FaUserAlt />,
     },
@@ -35,13 +35,13 @@ const Sidebar = ({ children }) => {
       icon: <FaCommentAlt />,
     },
     {
-      path: "/product",
-      name: "Product",
+      path: "/playlist",
+      name: "Playlist",
       icon: <FaShoppingBag />,
     },
     {
-      path: "/productList",
-      name: "Product List",
+      path: "/songs",
+      name: "Songs",
       icon: <FaThList />,
     },
   ];

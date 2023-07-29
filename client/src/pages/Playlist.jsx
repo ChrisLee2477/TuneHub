@@ -1,6 +1,6 @@
 import React from "react";
 
-const playlist = () => {
+const Playlist = () => {
   return (
     <div>
       <h1>playlist page</h1>
@@ -8,4 +8,4 @@ const playlist = () => {
   );
 };
 
-export default Product;
+export default Playlist;

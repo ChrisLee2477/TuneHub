@@ -8,4 +8,4 @@ const Songs = () => {
   );
 };
 
-export default ProductList;
+export default Songs;

@@ -3,7 +3,6 @@ import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from "@ap
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard.jsx";
-import SignupPage from "./pages/Signup";
 import SpotifyPage from "./pages/SpotifyPage";
 import Comment from "./pages/Comment.jsx";
 import Playlist from "./pages/Playlist";
@@ -24,7 +23,7 @@ function App() {
   });
 
   return (
-    <ApolloProvider client={client}>
+   // <ApolloProvider client={client}>
       <>
         {/* other components */}
         <BrowserRouter>
@@ -32,7 +31,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/signuppage" element={<SignupPage />} />
               <Route path="/comment" element={<Comment />} />
               <Route path="/spotifypage" element={<SpotifyPage />} />
               <Route path="/playlist" element={<Playlist />} />
@@ -40,9 +38,9 @@ function App() {
             </Routes>
           </Sidebar>
         </BrowserRouter>
-      </>
-    </ApolloProvider>
-  );
+        </>
+  //  </ApolloProvider>
+  )
 }
 
 export default App;

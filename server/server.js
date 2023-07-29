@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  context: authMiddleware,
 });
 
 app.use(cors());
@@ -22,33 +23,34 @@ const server = http.createServer(app);
 
 // Spotify Web API
 
-app
-  .post("/spotifylogin", (req, res) => {
+app.post("/spotifylogin", async (req, res) => {
+  try {
     const spotifyApi = new SpotifyWebApi({
       redirectUri: "http://localhost:3000/",
       clientId: "d67a6de2b2f045539acfef33cdff8840",
       clientSecret: "bd98e8446154499ab7eef56762cd16f2",
     });
 
-    spotifyApi.authorizationCodeGrant(code).then((data) => {
-      res.json({
-        accessToken: data.body.access_token,
-        refreshToken: data.body.refresh_token,
-        expiresIn: data.body.expires_in,
-      });
-    });
-  })
-  .catch(() => {
-    res.sendStatus(400);
-  });
+    const code = req.body.code;
 
+    const data = await spotifyApi.authorizationCodeGrant(code);
+
+    res.json({
+      accessToken: data.body.access_token,
+      refreshToken: data.body.refresh_token,
+      expiresIn: data.body.expires_in,
+    });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(400);
+  }
+});
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3000/",
     methods: ["GET", "POST"],
   },
 });
-
 io.on("connection", (socket) => {
   console.log(`user connected: ${socket.id}`);
 
@@ -64,18 +66,17 @@ server.listen(3002, () => {
   console.log("SERVER IS RUNNING");
 });
 // Create a new instance of an Apollo server with the GraphQL schema
-const startApolloServer = async () => {
+async function startApolloServer() {
   await apolloServer.start();
 
+  // Get the Apollo Server middleware and use it in Express app
+  const apolloMiddleware = apolloServer.getMiddleware();
+  app.use(apolloMiddleware);
+
+  app.use(cors());
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
-  app.use(
-    "/graphql",
-    expressMiddleware(apolloServer, {
-      context: authMiddleware,
-    })
-  );
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../client/dist")));
 
@@ -83,11 +84,13 @@ const startApolloServer = async () => {
       res.sendFile(path.join(__dirname, "../client/dist/index.html"));
     });
   }
+
   db.once("open", () => {
-    app.listen(PORT, () => {
+    http.createServer(app).listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
   });
-};
+}
+
 startApolloServer();
