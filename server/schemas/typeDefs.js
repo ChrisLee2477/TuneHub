@@ -46,7 +46,7 @@ type Mutation {
   createPlaylist(name: String!, creatorId: ID!): Playlist
   addSongToPlaylist(playlistId: ID!, songId: ID!): Playlist
   postComment(playlistId: ID!, userId: ID!, content: String!): Comment
- 
+  login(username: String!, password: String!): AuthPayload! 
 }
   `;
 
