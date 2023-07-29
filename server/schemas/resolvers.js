@@ -1,19 +1,20 @@
-const { v4: uuidv4 } = require("uuid");
 const { signToken, AuthenticationError } = require("../utils/auth");
-const { User, Song, Playlist, Comment } = require("../models");
+const { User, Comment } = require("../models");
 
 const resolvers = {
   Query: {
-    getUserById: async (parent, args) => {
-      const { id } = args;
-      return await User.findById(id);
+    users: async () => {
+      return User.find();
     },
-    getAllSongs: async () => {
-      return await Song.find();
+    user: async (parent, { username }) => {
+      return User.findOne({ username });
     },
-    getPlaylistById: async (parent, args) => {
-      const { id } = args;
-      return await Playlist.findById(id).populate("songs");
+    comments: async (parent, { username }) => {
+      const params = username ? { username } : {};
+      return Comment.find(params).sort({ createdAt: -1 }).populate("user");
+    },
+    comment: async (parent, { _id }) => {
+      return Comment.findOne({ _id }).populate("user");
     },
   },
   Mutation: {
@@ -30,52 +31,10 @@ const resolvers = {
 
       return { user: newUser, token };
     },
-    createSong: async (parent, args) => {
-      const { title, artist, album, duration } = args;
-      const newSong = new Song({
-        title,
-        artist,
-        album,
-        duration,
-      });
-      await newSong.save();
-      return newSong;
-    },
-    createPlaylist: async (parent, args) => {
-      const { name, creatorId } = args;
-      const creator = await User.findById(creatorId);
-      if (!creator) {
-        throw new Error("User not found");
-      }
-      const newPlaylist = new Playlist({
-        name,
-        creator: creator._id,
-        songs: [],
-      });
-      await newPlaylist.save();
-      return newPlaylist;
-    },
-    addSongToPlaylist: async (parent, args) => {
-      const { playlistId, songId } = args;
-      const playlist = await Playlist.findById(playlistId);
-      const songToAdd = await Song.findById(songId);
 
-      if (!playlist || !songToAdd) {
-        throw new Error("Playlist or Song not found");
-      }
-
-      playlist.songs.push(songToAdd);
-      await playlist.save();
-      return playlist;
-    },
     postComment: async (parent, args) => {
-      const { playlistId, userId, content } = args;
-      const playlist = await Playlist.findById(playlistId);
+      const { userId, content } = args;
       const user = await User.findById(userId);
-
-      if (!playlist || !user) {
-        throw new Error("Playlist or User not found");
-      }
 
       const newComment = new Comment({
         user: user._id,

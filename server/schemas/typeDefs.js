@@ -1,52 +1,36 @@
 const typeDefs = `
   type User {
     _id: ID
-    username: String
+    name: String
     email: String
     password: String
-    
-  }
- 
-  type Song  {
-    _id: String
-    title: String
-    artist: String
-    album: String
-    duration: Int
+    comments: [String]!
   }
 
-  type Playlist  {
-    _id: String
-    name: String
-    creator: User
-    songs: [Song]!
-  }
 
   type Comment {
-    _id: ID
-    user: User
-    content: String
-    createdAt: String
+    _id: ID!
+    user: User!
+    content: String!
+    createdAt: String!
   }
 
-  type AuthPayload {
+ type Auth {
     token: String!
     profile: User!
   }
   type Query {
-  getUserById(_id: ID!): User
-  getAllSongs: [Song]!
-  getPlaylistById(id: ID!): Playlist
- 
-}
+    users: [User]
+    user(username: String!): User
+    comments(username: String!): [Comment] 
+    comment(_id: ID!): Comment
+  }
 
 type Mutation {
-  createUser(username: String!, email: String!, password: String!): User
-  createSong(title: String!, artist: String!, album: String!, duration: Int!): Song
-  createPlaylist(name: String!, creatorId: ID!): Playlist
-  addSongToPlaylist(playlistId: ID!, songId: ID!): Playlist
-  postComment(playlistId: ID!, userId: ID!, content: String!): Comment
-  login(username: String!, password: String!): AuthPayload! 
+  createUser(name: String!, email: String!, password: String!): Auth
+  login(username: String!, password: String!): Auth! 
+  postComment(userId: ID!, content: String!): Comment
+  
 }
   `;
 

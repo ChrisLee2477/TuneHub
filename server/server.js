@@ -1,8 +1,8 @@
 const express = require("express");
 const { ApolloServer } = require("@apollo/server");
-const { expressMiddleware } = require("@apollo/server/express4");
 const path = require("path");
 const { authMiddleware } = require("./utils/auth");
+const { expressMiddleware } = require("@apollo/server/express4");
 const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
@@ -15,10 +15,14 @@ const PORT = process.env.PORT || 3000;
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  context: authMiddleware,
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  })
+);
 const server = http.createServer(app);
 
 // Spotify Web API
@@ -65,17 +69,13 @@ io.on("connection", (socket) => {
 server.listen(3002, () => {
   console.log("SERVER IS RUNNING");
 });
+
 // Create a new instance of an Apollo server with the GraphQL schema
-async function startApolloServer() {
-  await apolloServer.start();
-
-  // Get the Apollo Server middleware and use it in Express app
-  const apolloMiddleware = apolloServer.getMiddleware();
-  app.use(apolloMiddleware);
-
-  app.use(cors());
+const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
+
+  app.use("/graphql", expressMiddleware(apolloServer, {}));
 
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../client/dist")));
@@ -84,13 +84,15 @@ async function startApolloServer() {
       res.sendFile(path.join(__dirname, "../client/dist/index.html"));
     });
   }
+  await apolloServer.start();
 
   db.once("open", () => {
-    http.createServer(app).listen(PORT, () => {
+    app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
   });
-}
+};
 
+// Call the async function to start the server
 startApolloServer();

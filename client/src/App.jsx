@@ -5,8 +5,6 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard.jsx";
 import SpotifyPage from "./pages/SpotifyPage";
 import Comment from "./pages/Comment.jsx";
-import Playlist from "./pages/Playlist";
-import Songs from "./pages/Songs";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -23,7 +21,7 @@ function App() {
   });
 
   return (
-   // <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
       <>
         {/* other components */}
         <BrowserRouter>
@@ -33,13 +31,11 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/comment" element={<Comment />} />
               <Route path="/spotifypage" element={<SpotifyPage />} />
-              <Route path="/playlist" element={<Playlist />} />
-              <Route path="/songs" element={<Songs />} />
             </Routes>
           </Sidebar>
         </BrowserRouter>
         </>
-  //  </ApolloProvider>
+    </ApolloProvider>
   )
 }
 
