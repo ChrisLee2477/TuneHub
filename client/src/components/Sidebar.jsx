@@ -19,11 +19,7 @@ const Sidebar = ({ children }) => {
       name: "Dashboard",
       icon: <FaTh />,
     },
-    {
-      path: "/signuppage",
-      name: "Sign Up",
-      icon: <FaUserAlt />,
-    },
+   
     {
       path: "/spotifypage",
       name: "Spotifypage",
@@ -34,16 +30,7 @@ const Sidebar = ({ children }) => {
       name: "Comment",
       icon: <FaCommentAlt />,
     },
-    {
-      path: "/product",
-      name: "Product",
-      icon: <FaShoppingBag />,
-    },
-    {
-      path: "/productList",
-      name: "Product List",
-      icon: <FaThList />,
-    },
+   
   ];
   return (
     <div className="container">

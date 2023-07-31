@@ -4,23 +4,8 @@ const typeDefs = `
     username: String
     email: String
     password: String
-    
-  }
- 
-  type Song  {
-    _id: String
-    title: String
-    artist: String
-    album: String
-    duration: Int
   }
 
-  type Playlist  {
-    _id: String
-    name: String
-    creator: User
-    songs: [Song]!
-  }
 
   type Comment {
     _id: ID
@@ -29,24 +14,22 @@ const typeDefs = `
     createdAt: String
   }
 
-  type Auth {
-    token: ID
-    user: User
+ type Auth {
+    token: String!
+    user: User!
   }
   type Query {
-  getUserById(_id: ID!): User
-  getAllSongs: [Song]!
-  getPlaylistById(id: ID!): Playlist
- 
-}
+    users: [User]
+    user(username: String!): User
+    comments(username: String!): [Comment] 
+    comment(_id: ID!): Comment
+  }
 
 type Mutation {
-  createUser(username: String!, email: String!, password: String!): User
-  createSong(title: String!, artist: String!, album: String!, duration: Int!): Song
-  createPlaylist(name: String!, creatorId: ID!): Playlist
-  addSongToPlaylist(playlistId: ID!, songId: ID!): Playlist
-  postComment(playlistId: ID!, userId: ID!, content: String!): Comment
- 
+  createUser(username: String!, email: String!, password: String!): Auth
+  login(username: String!, password: String!): Auth! 
+  postComment(userId: ID!, content: String!): Comment
+  
 }
   `;
 
