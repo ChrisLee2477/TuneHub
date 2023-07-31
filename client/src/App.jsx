@@ -1,7 +1,7 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import "./App.css";
+// import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Spotify from "../src/components/Spotify";
 import Chat from "./components/Chat";
@@ -31,17 +31,17 @@ function App() {
       <Spotify /> */}
 
       <BrowserRouter>
-        <Sidebar>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/signuppage" element={<SignupPage />} />
-            <Route path="/comment" element={<Comment />} />
-            <Route path="/spotifypage" element={<SpotifyPage />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/productList" element={<ProductList />} />
-          </Routes>
-        </Sidebar>
+        {/* <Sidebar> */}
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/signuppage" element={<SignupPage />} />
+          <Route path="/comment" element={<Comment />} />
+          <Route path="/spotifypage" element={<SpotifyPage />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/productList" element={<ProductList />} />
+        </Routes>
+        {/* </Sidebar> */}
       </BrowserRouter>
     </>
   );
