@@ -11,7 +11,50 @@ export const SIGNUP_USER = gql`
     }
   }
 `;
+export const CREATE_PLAYLIST = gql`
+  mutation CreatePlaylist($title: String!, $description: String) {
+    createPlaylist(title: $title, description: $description) {
+      _id
+      title
+      description
+      owner {
+        _id
+        username
+        email
+      }
+    }
+  }
+`;
 
+export const ADD_TRACK_TO_PLAYLIST = gql`
+  mutation AddTrackToPlaylist(
+    $playlistId: ID!
+    $title: String!
+    $artist: String!
+    $album: String!
+    $duration: Int!
+    $uri: String!
+    $imageUrl: String
+  ) {
+    addTrackToPlaylist(
+      playlistId: $playlistId
+      title: $title
+      artist: $artist
+      album: $album
+      duration: $duration
+      uri: $uri
+      imageUrl: $imageUrl
+    ) {
+      _id
+      title
+      artist
+      album
+      duration
+      uri
+      imageUrl
+    }
+  }
+`;
 export const ADD_COMMENT = gql`
   mutation AddComment($user: String, $content: String!, $createdAt: String!) {
     addComment(user: $user, content: $content, createdAt: $createdAt) {
