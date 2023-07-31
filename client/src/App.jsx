@@ -1,50 +1,42 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Spotify from "../src/components/Spotify";
-import Chat from "./components/Chat";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-// import Nav from "./components/Nav";
-import React from "react";
-
+import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard.jsx";
-import SignupPage from "./pages/SignupPage";
 import SpotifyPage from "./pages/SpotifyPage";
 import Comment from "./pages/Comment.jsx";
-import Product from "./pages/Product.jsx";
-import ProductList from "./pages/ProductList.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
 
-  return (
-    <>
-      {/* <Nav />
-      <Chat />
-      <Login />
-      <Signup />
-      <Spotify /> */}
+  // Create the HTTP link to your GraphQL server
+  const httpLink = createHttpLink({
+    uri: "/graphql",
+  });
 
-      <BrowserRouter>
-        <Sidebar>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/signuppage" element={<SignupPage />} />
-            <Route path="/comment" element={<Comment />} />
-            <Route path="/spotifypage" element={<SpotifyPage />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/productList" element={<ProductList />} />
-          </Routes>
-        </Sidebar>
-      </BrowserRouter>
-    </>
-  );
+  // Create the Apollo Client
+  const client = new ApolloClient({
+    link: httpLink,
+    cache: new InMemoryCache(),
+  });
+
+  return (
+    <ApolloProvider client={client}>
+      <>
+        {/* other components */}
+        <BrowserRouter>
+          <Sidebar>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/comment" element={<Comment />} />
+              <Route path="/spotifypage" element={<SpotifyPage />} />
+            </Routes>
+          </Sidebar>
+        </BrowserRouter>
+        </>
+    </ApolloProvider>
+  )
 }
 
 export default App;
