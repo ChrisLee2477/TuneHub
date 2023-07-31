@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_PLAYLIST, ADD_TRACK_TO_PLAYLIST } from "../utils/mutation";
-import { QUERY_USER_BY_ID } from "../utils/query";
+import { QUERY_USER_BY_ID } from "../utils/queries";
 
 const Playlist = ({ playlist, userId }) => {
   const [trackFormData, setTrackFormData] = useState({
