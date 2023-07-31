@@ -1,20 +1,15 @@
 import React from "react";
-import Chat from "../components/Chat";
-import ConAndConSide from "../components/ConAndConWidget";
-import { ContactsProvider } from "../contexts/ContactsProvider";
-import useLocalStorage from "../hook/LocalStorage";
-import { ConversationsProvider } from "../contexts/ConversationsProvider";
+import TextArea from "../components/TextArea";
+import OpenConversation from "../components/OpenConversation";
+import { useConversations } from "../contexts/ConversationsProvider";
 
-export default function Comment() {
-  // const [id, setId] = useLocalStorage(id);
-  const id = 45456184841;
-
-  const conWid = (
-    <ContactsProvider>
-      <ConversationsProvider>
-        <ConAndConSide id={id} />
-      </ConversationsProvider>
-    </ContactsProvider>
+export default function Comment(id) {
+  const { selectConversation } = useConversations();
+  console.log(useConversations());
+  return (
+    <div className="d-flex" style={{ height: "100vh" }}>
+      <TextArea id={id} />
+      {selectConversation?.selected && <OpenConversation />}
+    </div>
   );
-  return conWid;
 }

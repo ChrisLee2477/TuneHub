@@ -35,9 +35,11 @@ export function ConversationsProvider({ children }) {
 
   const value = {
     conversations: formattedConversations,
+    selectConversation: formattedConversations[selectedConversationIndex],
     selectConversationIndex: setSelectedConversationIndex,
     createConversation,
   };
+  // console.log(value);
   return (
     <ConversationsContext.Provider value={value}>
       {children}
