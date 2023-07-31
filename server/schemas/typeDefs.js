@@ -13,6 +13,23 @@ const typeDefs = `
     content: String
     createdAt: String
   }
+  type Playlist {
+    _id: ID!
+    title: String!
+    description: String
+    owner: User!
+    tracks: [Track!]!
+  }
+
+  type Track {
+    _id: ID!
+    title: String!
+    artist: String!
+    album: String!
+    duration: Float!
+    uri: String!
+    imageUrl: String
+  }
 
  type Auth {
     token: String!
@@ -29,7 +46,16 @@ type Mutation {
   createUser(username: String!, email: String!, password: String!): Auth
   login(username: String!, password: String!): Auth! 
   postComment(userId: ID!, content: String!): Comment
-  
+  createPlaylist(title: String!, description: String): Playlist
+    addTrackToPlaylist(
+      playlistId: ID!
+      title: String!
+      artist: String!
+      album: String!
+      duration: Float!
+      uri: String!
+      imageUrl: String
+    ): Track
 }
   `;
 
