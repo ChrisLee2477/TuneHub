@@ -11,7 +11,7 @@ const spotifyApi = require("spotify-web-api-node");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
@@ -66,16 +66,14 @@ io.on("connection", (socket) => {
     socket.to(data.room).emit("receive_message", data);
   });
 });
-server.listen(3002, () => {
-  console.log("SERVER IS RUNNING");
-});
+// server.listen(3001, () => {
+//   console.log("SERVER IS RUNNING");
+// });
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-
-  app.use("/graphql", expressMiddleware(apolloServer, {}));
 
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../client/dist")));
@@ -84,13 +82,14 @@ const startApolloServer = async () => {
       res.sendFile(path.join(__dirname, "../client/dist/index.html"));
     });
   }
-  await apolloServer.start();
 
-  db.once("open", () => {
+  db.once("open", async () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
+    await apolloServer.start();
+    app.use("/graphql", expressMiddleware(apolloServer, {}));
   });
 };
 

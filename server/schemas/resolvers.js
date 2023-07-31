@@ -18,18 +18,32 @@ const resolvers = {
     },
   },
   Mutation: {
-    createUser: async (parent, args) => {
-      const { username, email, password } = args;
-      const newUser = new User({
-        username,
-        email,
-        password,
-      });
-      await newUser.save();
+    createUser: async (parent, { username, email, password }) => {
+      try {
+        const user = await User.create({ username, email, password });
+        const token = signToken(user);
+        return { token, user };
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    login: async (parent, { username, password }) => {
+      console.log("login mutation reached");
+      const user = await User.findOne({ username });
 
-      const token = signToken({ userId: newUser._id });
+      if (!user) {
+        throw AuthenticationError;
+      }
 
-      return { user: newUser, token };
+      const correctPw = await user.isCorrectPassword(password);
+
+      if (!correctPw) {
+        throw AuthenticationError;
+      }
+
+      const token = signToken(user);
+
+      return { token, user };
     },
 
     postComment: async (parent, args) => {
@@ -44,17 +58,6 @@ const resolvers = {
 
       await newComment.save();
       return newComment;
-    },
-    login: async (parent, args) => {
-      const { email, password } = args;
-      const user = await User.findOne({ email });
-
-      if (!user || user.password !== password) {
-        throw new AuthenticationError("Invalid credentials");
-      }
-
-      const token = signToken({ userId: user._id });
-      return { user, token };
     },
   },
 };

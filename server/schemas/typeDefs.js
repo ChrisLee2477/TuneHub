@@ -1,23 +1,22 @@
 const typeDefs = `
   type User {
     _id: ID
-    name: String
+    username: String
     email: String
     password: String
-    comments: [String]!
   }
 
 
   type Comment {
-    _id: ID!
-    user: User!
-    content: String!
-    createdAt: String!
+    _id: ID
+    user: User
+    content: String
+    createdAt: String
   }
 
  type Auth {
     token: String!
-    profile: User!
+    user: User!
   }
   type Query {
     users: [User]
@@ -27,7 +26,7 @@ const typeDefs = `
   }
 
 type Mutation {
-  createUser(name: String!, email: String!, password: String!): Auth
+  createUser(username: String!, email: String!, password: String!): Auth
   login(username: String!, password: String!): Auth! 
   postComment(userId: ID!, content: String!): Comment
   
