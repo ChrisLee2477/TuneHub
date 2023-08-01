@@ -10,11 +10,6 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard.jsx";
 import SpotifyPage from "./pages/SpotifyPage";
 import Comment from "./pages/Comment.jsx";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { ConversationsProvider } from "./contexts/ConversationsProvider";
-import { ContactsProvider } from "./contexts/ContactsProvider";
-import { Socket } from "socket.io-client";
-import { SocketProvider } from "./contexts/SocketProvider";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -35,22 +30,16 @@ function App() {
     <ApolloProvider client={client}>
       <>
         {/* other components */}
-        <SocketProvider id={id}>
-          <ContactsProvider>
-            <ConversationsProvider id={id}>
-              <BrowserRouter>
-                {/* <Sidebar> */}
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/comment" element={<Comment />} />
-                  <Route path="/spotifypage" element={<SpotifyPage />} />
-                </Routes>
-                {/* </Sidebar> */}
-              </BrowserRouter>
-            </ConversationsProvider>
-          </ContactsProvider>
-        </SocketProvider>
+        <BrowserRouter>
+          <Sidebar>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/comment" element={<Comment />} />
+              <Route path="/spotifypage" element={<SpotifyPage />} />
+            </Routes>
+          </Sidebar>
+        </BrowserRouter>
       </>
     </ApolloProvider>
   );
