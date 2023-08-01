@@ -1,77 +1,57 @@
-const { v4: uuidv4 } = require("uuid");
-const { User, Song, Playlist, Comment } = require("../models");
+const { signToken, AuthenticationError } = require("../utils/auth");
+const { User, Comment, Playlist, Track } = require("../models");
 
 const resolvers = {
   Query: {
-    getUserById: async (parent, args) => {
-      const { id } = args;
-      return await User.findById(id);
+    users: async () => {
+      return User.find();
     },
-    getAllSongs: async () => {
-      return await Song.find();
+    user: async (parent, { username }) => {
+      return User.findOne({ username });
     },
-    getPlaylistById: async (parent, args) => {
-      const { id } = args;
-      return await Playlist.findById(id).populate("songs");
+    comments: async (parent, { username }) => {
+      const params = username ? { username } : {};
+      return Comment.find(params).sort({ createdAt: -1 }).populate("user");
+    },
+    comment: async (parent, { _id }) => {
+      return Comment.findOne({ _id }).populate("user");
+    },
+    playlist: async (parent, { playlistId }) => {
+      return Playlist.findById(playlistId).populate("tracks");
     },
   },
   Mutation: {
-    createUser: async (parent, args) => {
-      const { username, email, password } = args;
-      const newUser = new User({
-        username,
-        email,
-        password,
-      });
-      await newUser.save();
-      return newUser;
-    },
-    createSong: async (parent, args) => {
-      const { title, artist, album, duration } = args;
-      const newSong = new Song({
-        title,
-        artist,
-        album,
-        duration,
-      });
-      await newSong.save();
-      return newSong;
-    },
-    createPlaylist: async (parent, args) => {
-      const { name, creatorId } = args;
-      const creator = await User.findById(creatorId);
-      if (!creator) {
-        throw new Error("User not found");
+    createUser: async (parent, { username, email, password }) => {
+      try {
+        const user = await User.create({ username, email, password });
+        const token = signToken(user);
+        return { token, user };
+      } catch (error) {
+        console.error(error);
       }
-      const newPlaylist = new Playlist({
-        name,
-        creator: creator._id,
-        songs: [],
-      });
-      await newPlaylist.save();
-      return newPlaylist;
     },
-    addSongToPlaylist: async (parent, args) => {
-      const { playlistId, songId } = args;
-      const playlist = await Playlist.findById(playlistId);
-      const songToAdd = await Song.findById(songId);
+    login: async (parent, { username, password }) => {
+      console.log("login mutation reached");
+      const user = await User.findOne({ username });
 
-      if (!playlist || !songToAdd) {
-        throw new Error("Playlist or Song not found");
+      if (!user) {
+        throw AuthenticationError;
       }
 
-      playlist.songs.push(songToAdd);
-      await playlist.save();
-      return playlist;
+      const correctPw = await user.isCorrectPassword(password);
+
+      if (!correctPw) {
+        throw AuthenticationError;
+      }
+
+      const token = signToken(user);
+
+      return { token, user };
     },
+
     postComment: async (parent, args) => {
-      const { playlistId, userId, content } = args;
-      const playlist = await Playlist.findById(playlistId);
+      const { userId, content } = args;
       const user = await User.findById(userId);
-
-      if (!playlist || !user) {
-        throw new Error("Playlist or User not found");
-      }
 
       const newComment = new Comment({
         user: user._id,
@@ -81,6 +61,67 @@ const resolvers = {
 
       await newComment.save();
       return newComment;
+    },
+    createPlaylist: async (parent, { title, description }, context) => {
+      try {
+        // Ensure user is authenticated
+        if (!context.user) {
+          throw new AuthenticationError(
+            "You must be logged in to create a playlist"
+          );
+        }
+
+        // Create the playlist
+        const playlist = new Playlist({
+          title,
+          description,
+          owner: context.user._id,
+          tracks: [], // Initialize with an empty array of tracks
+        });
+
+        await playlist.save();
+
+        // Add the playlist ID to the user's playlists array
+        context.user.playlists.push(playlist._id);
+        await context.user.save();
+
+        return playlist;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    addTrackToPlaylist: async (
+      parent,
+      { playlistId, title, artist, album, duration, uri, imageUrl }
+    ) => {
+      try {
+        const playlist = await Playlist.findById(playlistId);
+
+        if (!playlist) {
+          throw new Error("Playlist not found");
+        }
+
+        // Create the track
+        const track = new Track({
+          title,
+          artist,
+          album,
+          duration,
+          uri,
+          imageUrl,
+        });
+
+        // Save the track to the database
+        await track.save();
+
+        // Add the track ID to the playlist's tracks array
+        playlist.tracks.push(track._id);
+        await playlist.save();
+
+        return track;
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 };
