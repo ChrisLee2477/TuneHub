@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { SIGNUP_USER } from "../utils/mutation"; 
+import { SIGNUP_USER } from "../utils/mutation";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +9,7 @@ const Signup = () => {
     password: "",
   });
 
-  const [signupUser, { loading, error }] = useMutation(SIGNUP_USER); 
+  const [signupUser, { loading, error }] = useMutation(SIGNUP_USER);
 
   const handleSubmit = (e) => {
     e.preventDefault();
