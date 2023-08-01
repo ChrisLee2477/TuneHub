@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from "../utils/mutation"; 
+import { LOGIN_USER } from "../utils/mutation";
+import { useNavigate } from "react-router-dom";
+
+// import { useHistory } from "react-router-dom";
 const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -37,6 +40,12 @@ const Login = () => {
       [name]: value,
     }));
   };
+  // redirect after login
+  // let history = useHistory();
+  const navigate = useNavigate();
+  function handleClick() {
+    navigate("/signup");
+  }
 
   return (
     <div>
@@ -64,10 +73,20 @@ const Login = () => {
             required
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+          // onClick={() => {
+          //   history.push("/dashboard");
+          // }}
+        >
           Login
         </button>
         {error && <p>Error: {error.message}</p>}
+
+        <button onClick={(e) => handleClick()}>
+          Don't have an account? Sign up :)
+        </button>
       </form>
     </div>
   );
