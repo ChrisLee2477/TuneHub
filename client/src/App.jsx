@@ -27,13 +27,14 @@ function App() {
     link: httpLink,
     cache: new InMemoryCache(),
   });
+  const id = 45456184841;
 
   return (
     <ApolloProvider client={client}>
       <>
         {/* other components */}
         <ContactsProvider>
-          <ConversationsProvider>
+          <ConversationsProvider id={id}>
             <BrowserRouter>
               {/* <Sidebar> */}
               <Routes>
