@@ -15,11 +15,11 @@ const Sidebar = ({ children }) => {
   const toggle = () => setIsOpen(!isOpen);
   const menuItem = [
     {
-      path: "/",
+      path: "/dashboard",
       name: "Dashboard",
       icon: <FaTh />,
     },
-   
+
     {
       path: "/spotifypage",
       name: "Spotifypage",
@@ -30,7 +30,6 @@ const Sidebar = ({ children }) => {
       name: "Comment",
       icon: <FaCommentAlt />,
     },
-   
   ];
   return (
     <div className="container">
