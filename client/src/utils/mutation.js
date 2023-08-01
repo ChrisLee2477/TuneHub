@@ -88,3 +88,59 @@ export const REMOVE_COMMENT = gql`
     }
   }
 `;
+
+export const CREATE_CHAT = gql`
+  mutation CreateChat($users: [ID!]!) {
+    createChat(users: $users) {
+      _id
+      users {
+        _id
+        username
+        email
+      }
+      messages {
+        _id
+        sentBy {
+          _id
+          username
+          email
+        }
+        content
+        createdTime
+      }
+    }
+  }
+`;
+
+export const SEND_MESSAGE = gql`
+  mutation SendMessage($chatId: ID!, $sentBy: ID!, $content: String!) {
+    sendMessage(chatId: $chatId, sentBy: $sentBy, content: $content) {
+      _id
+      sentBy {
+        _id
+        username
+        email
+      }
+      chat {
+        _id
+        users {
+          _id
+          username
+          email
+        }
+        messages {
+          _id
+          sentBy {
+            _id
+            username
+            email
+          }
+          content
+          createdTime
+        }
+      }
+      content
+      createdTime
+    }
+  }
+`;
