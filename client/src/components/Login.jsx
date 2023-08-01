@@ -40,11 +40,14 @@ const Login = () => {
       [name]: value,
     }));
   };
-  // redirect after login
-  // let history = useHistory();
+
   const navigate = useNavigate();
   function handleClick() {
     navigate("/signup");
+  }
+  // redirect to dash after login
+  function logDash() {
+    navigate("/dashboard");
   }
 
   return (
@@ -73,13 +76,7 @@ const Login = () => {
             required
           />
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          // onClick={() => {
-          //   history.push("/dashboard");
-          // }}
-        >
+        <button onClick={(e) => logDash()} type="submit" disabled={loading}>
           Login
         </button>
         {error && <p>Error: {error.message}</p>}
