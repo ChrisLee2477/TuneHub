@@ -1,5 +1,5 @@
 const { signToken, AuthenticationError } = require("../utils/auth");
-const { User, Comment, Playlist, Track } = require("../models");
+const { User, Comment, Playlist, Track, Chat, Message } = require("../models");
 
 const resolvers = {
   Query: {
@@ -119,6 +119,71 @@ const resolvers = {
         await playlist.save();
 
         return track;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    createChat: async (parent, { users }, context) => {
+      try {
+        // Ensure user is authenticated
+        if (!context.user) {
+          throw new AuthenticationError(
+            "You must be logged in to create a chat"
+          );
+        }
+
+        // Check if the users in the `users` array exist
+        const existingUsers = await User.find({ _id: { $in: users } });
+        if (existingUsers.length !== users.length) {
+          throw new Error("Some user(s) not found");
+        }
+
+        // Create the chat
+        const chat = new Chat({
+          users,
+          messages: [],
+        });
+
+        await chat.save();
+
+        return chat;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    sendMessage: async (parent, { chatId, sentBy, content }, context) => {
+      try {
+        // Ensure user is authenticated
+        if (!context.user) {
+          throw new AuthenticationError(
+            "You must be logged in to send a message"
+          );
+        }
+
+        // Check if the chat exists and the user is part of the chat
+        const chat = await Chat.findById(chatId);
+        if (!chat || !chat.users.includes(context.user._id)) {
+          throw new Error(
+            "Chat not found or you are not authorized to send messages in this chat"
+          );
+        }
+
+        // Create the message
+        const message = new Message({
+          sentBy,
+          chat: chat._id,
+          content,
+          createdTime: new Date().toISOString(),
+        });
+
+        await message.save();
+
+        // Add the message to the chat's messages array
+        chat.messages.push(message._id);
+        await chat.save();
+
+        return message;
       } catch (error) {
         console.error(error);
       }
