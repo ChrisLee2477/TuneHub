@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useConversations } from "../contexts/ConversationsProvider";
 
 export default function OpenConversation() {
   const [text, setText] = useState("");
-  const lastMessageRef = useRef();
   const setRef = useCallback((node) => {
     if (node) {
       node.scrollIntoView({ smoooth: true });
