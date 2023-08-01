@@ -16,9 +16,9 @@ const resolvers = {
     comment: async (parent, { _id }) => {
       return Comment.findOne({ _id }).populate("user");
     },
-    playlist: async (parent, { playlistId }) => {
-      return Playlist.findById(playlistId).populate("tracks");
-    },
+    // playlist: async (parent, { playlistId }) => {
+    //   return Playlist.findById(playlistId).populate("tracks");
+    // },
   },
   Mutation: {
     createUser: async (parent, { username, email, password }) => {

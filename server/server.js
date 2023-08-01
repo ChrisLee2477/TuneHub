@@ -35,72 +35,24 @@ const server = http.createServer(app);
 
 app.use(bodyParser.json());
 
-var client_id = "8000e5a74ec242939a1246f4295be86c"; // Your client id
-var client_secret = "0a652098d8db4e21b13c660584ad0ba0"; // Your secret
-var redirect_uri = "http://localhost:3000/spotifylogin"; // Your redirect uri
+const client_id = "8000e5a74ec242939a1246f4295be86c"; // Your client id
+const client_secret = "0a652098d8db4e21b13c660584ad0ba0"; // Your secret
+const redirect_uri = "http://localhost:3000/callback"; // Your redirect uri
 
-app.get("/auth/login", (req, res) => {});
+app.get("/login", function (req, res) {
+  var state = generateRandomString(16);
+  var scope = "user-read-private user-read-email";
 
-app.get("/auth/callback", (req, res) => {});
-
-var generateRandomString = function (length) {
-  var text = "";
-  var possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-
-app.post("/callback", function (req, res) {
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-
-app.post("/spotifylogin", async (req, res) => {
-  try {
-    const spotifyApi = new SpotifyWebApi({
-      redirectUri: "http://localhost:3000/",
-      clientId: "d67a6de2b2f045539acfef33cdff8840",
-      clientSecret: "bd98e8446154499ab7eef56762cd16f2",
-    });
-
-    const code = req.body.code;
-
-    const data = await spotifyApi.authorizationCodeGrant(code);
-
-    res.json({
-      accessToken: data.body.access_token,
-      refreshToken: data.body.refresh_token,
-      expiresIn: data.body.expires_in,
-    });
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(400);
-  }
-});
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000/",
-    methods: ["GET", "POST"],
-  },
-});
-io.on("connection", (socket) => {
-  console.log(`user connected: ${socket.id}`);
-
-  socket.on("join_room", (data) => {
-    socket.join(data);
-  });
-
-  socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data);
-  });
-});
-
-
-server.listen(3002, () => {
-  console.log("SERVER IS RUNNING");
+  res.redirect(
+    "https://accounts.spotify.com/authorize?" +
+      querystring.stringify({
+        response_type: "code",
+        client_id: client_id,
+        scope: scope,
+        redirect_uri: redirect_uri,
+        state: state,
+      })
+  );
 });
 
 // ==== [Apollo] ====

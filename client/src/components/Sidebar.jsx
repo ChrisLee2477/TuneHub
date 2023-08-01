@@ -21,8 +21,8 @@ const Sidebar = ({ children }) => {
     },
 
     {
-      path: "/spotifypage",
-      name: "Spotifypage",
+      path: "/spotify",
+      name: "Spotify",
       icon: <FaRegChartBar />,
     },
     {
