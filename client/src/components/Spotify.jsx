@@ -1,4 +1,5 @@
 import React from "react";
+import "./Components.css";
 
 import { Container } from "react-bootstrap";
 
@@ -8,11 +9,11 @@ const AUTH_URL =
 export default function Spotify() {
   return (
     <Container
-      className="d-flex justify-content-center align-items-center"
+      className="d-flex justify-content-center align-items-center form"
       style={{ minHeight: "100vh" }}
     >
       <a className="btn btn-success btn-lg" href={AUTH_URL}>
-        Login with Spotify
+        Login with Spotify;
       </a>
     </Container>
   );
