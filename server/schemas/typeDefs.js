@@ -30,7 +30,18 @@ const typeDefs = `
     uri: String!
     imageUrl: String
   }
+  type Message {
+    _id: ID
+    sentBy: User
+    chat: Chat
+    createdTime: String
+  }
 
+  type Chat {
+    users: [User]
+    messages: [Message]
+  }
+  
  type Auth {
     token: String!
     user: User!
