@@ -4,7 +4,7 @@ import { LOGIN_USER } from "../utils/mutation";
 import { useNavigate } from "react-router-dom";
 
 // import { useHistory } from "react-router-dom";
-const Login = () => {
+const Login = ({setLoggedIn}) => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -25,6 +25,7 @@ const Login = () => {
     })
       .then((response) => {
         console.log("User logged in successfully:", response.data);
+        setLoggedIn(true)
         // Optionally, redirect the user to the dashboard or another protected page
         // history.push("/dashboard");
       })

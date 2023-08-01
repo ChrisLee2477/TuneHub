@@ -36,7 +36,7 @@ function App() {
         {loggedIn && <Sidebar></Sidebar>}
           {/* <Sidebar> */}
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<Login setLoggedIn = {setLoggedIn} />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/comment" element={<Comment />} />
               <Route path="/spotifypage" element={<SpotifyPage />} />
