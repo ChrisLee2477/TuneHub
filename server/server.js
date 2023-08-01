@@ -56,14 +56,19 @@ const io = new Server(server, {
   },
 });
 io.on("connection", (socket) => {
-  console.log(`user connected: ${socket.id}`);
+  const id = socket.handshake.query.id;
+  socket.join(id);
 
-  socket.on("join_room", (data) => {
-    socket.join(data);
-  });
-
-  socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data);
+  socket.on("send_message", ({ recipients, text }) => {
+    recipients.forEach((recipient) => {
+      const newRecipients = recipients.filter((r) => r !== recipient);
+      newRecipients.push(id);
+      socket.broadcast.to(recipient).emit("receive_message", {
+        recipients: newRecipients,
+        sender: id,
+        text,
+      });
+    });
   });
 });
 // server.listen(3001, () => {
