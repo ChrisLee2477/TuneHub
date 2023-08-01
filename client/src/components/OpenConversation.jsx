@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useConversations } from "../contexts/ConversationsProvider";
 
 export default function OpenConversation() {
   const [text, setText] = useState("");
+  const lastMessageRef = useRef();
+  const setRef = useCallback((node) => {
+    if (node) {
+      node.scrollIntoView({ smoooth: true });
+    }
+  }, []);
   const { sendMessage, selectConversation } = useConversations();
   function handleSubmit(e) {
     e.preventDefault();
@@ -19,10 +25,13 @@ export default function OpenConversation() {
   return (
     <div className="d-flex flex-column flex-grow-1">
       <div className="flex-grow-1 overflow-auto">
-        <div className="h-100 d-flex flex-column align-items-start justify-content-end px-3">
+        <div className="d-flex flex-column align-items-start justify-content-end px-3">
           {selectConversation.messages.map((message, index) => {
+            const lastMessage =
+              selectConversation.messages.length - 1 === index;
             return (
               <div
+                ref={lastMessage ? setRef : null}
                 key={index}
                 className={`my-1 d-flex flex-column ${
                   message.fromMe ? "align-self-end" : ""
