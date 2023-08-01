@@ -15,7 +15,8 @@ import Login from "./components/Login";
 
 function App() {
   const [count, setCount] = useState(0);
-
+  // will have to be updated to true when logged in
+  const [loggedIn, setLoggedIn] = useState(false) 
   // Create the HTTP link to your GraphQL server
   const httpLink = createHttpLink({
     uri: "/graphql",
@@ -32,7 +33,8 @@ function App() {
       <>
         {/* other components */}
         <BrowserRouter>
-          <Sidebar>
+        {loggedIn && <Sidebar></Sidebar>}
+          {/* <Sidebar> */}
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -40,7 +42,7 @@ function App() {
               <Route path="/spotifypage" element={<SpotifyPage />} />
               <Route path="/signup" element={<Signup />} />
             </Routes>
-          </Sidebar>
+          {/* </Sidebar> */}
         </BrowserRouter>
       </>
     </ApolloProvider>
