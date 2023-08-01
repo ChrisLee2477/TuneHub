@@ -41,7 +41,7 @@ const typeDefs = `
     users: [User]
     messages: [Message]
   }
-  
+
  type Auth {
     token: String!
     user: User!
@@ -67,6 +67,8 @@ type Mutation {
       uri: String!
       imageUrl: String
     ): Track
+  createChat(users: [ID!]!): Chat
+  sendMessage(chatId: ID!, sentBy: ID!, content: String!): Message
 }
   `;
 
