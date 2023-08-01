@@ -66,7 +66,7 @@ const resolvers = {
       try {
         // Ensure user is authenticated
         if (!context.user) {
-          throw new AuthenticationError(
+          throw AuthenticationError(
             "You must be logged in to create a playlist"
           );
         }
@@ -127,9 +127,7 @@ const resolvers = {
       try {
         // Ensure user is authenticated
         if (!context.user) {
-          throw new AuthenticationError(
-            "You must be logged in to create a chat"
-          );
+          throw AuthenticationError;
         }
 
         // Check if the users in the `users` array exist
@@ -145,6 +143,7 @@ const resolvers = {
         });
 
         await chat.save();
+        await chat.populate("users");
 
         return chat;
       } catch (error) {
@@ -153,12 +152,11 @@ const resolvers = {
     },
 
     sendMessage: async (parent, { chatId, sentBy, content }, context) => {
+      console.log(context.user);
       try {
         // Ensure user is authenticated
         if (!context.user) {
-          throw new AuthenticationError(
-            "You must be logged in to send a message"
-          );
+          throw AuthenticationError;
         }
 
         // Check if the chat exists and the user is part of the chat
@@ -178,6 +176,7 @@ const resolvers = {
         });
 
         await message.save();
+        await message.populate("sentBy");
 
         // Add the message to the chat's messages array
         chat.messages.push(message._id);

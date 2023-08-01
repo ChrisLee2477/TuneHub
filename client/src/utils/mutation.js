@@ -90,7 +90,7 @@ export const REMOVE_COMMENT = gql`
 `;
 
 export const CREATE_CHAT = gql`
-  mutation CreateChat($users: [ID!]!) {
+  mutation CreateChat($users: ID!) {
     createChat(users: $users) {
       _id
       users {
