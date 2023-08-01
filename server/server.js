@@ -12,6 +12,7 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 // ==== [Env] ====
 
@@ -25,34 +26,66 @@ const apolloServer = new ApolloServer({
 
 // ==== [Cors] ====
 app.use(cors());
+app.use(cookieParser());
 const server = http.createServer(app);
 
 //==== [Spotify] ====
 
 app.use(bodyParser.json());
 
-app.post("/spotifylogin", (req, res) => {
-  const spotifyApi = new SpotifyWebApi({
-    redirectUri: "http://localhost:3000/",
-    clientId: "d67a6de2b2f045539acfef33cdff8840",
-    clientSecret: "bd98e8446154499ab7eef56762cd16f2",
-  });
+var client_id = "8000e5a74ec242939a1246f4295be86c"; // Your client id
+var client_secret = "0a652098d8db4e21b13c660584ad0ba0"; // Your secret
+var redirect_uri = "http://localhost:3000/spotifylogin"; // Your redirect uri
 
-  spotifyApi
-    .authorizationCodeGrant(code)
-    .then((data) => {
-      res.json({
-        accessToken: data.body.access_token,
-        refreshToken: data.body.refresh_token,
-        expiresIn: data.body.expires_in,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(400);
-    });
+app.get("/auth/login", (req, res) => {});
+
+app.get("/auth/callback", (req, res) => {});
+
+var generateRandomString = function (length) {
+  var text = "";
+  var possible =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
+app.post("/callback", function (req, res) {
+  var code = req.query.code || null;
+  var state = req.query.state || null;
+
+  if (state === null) {
+    res.redirect(
+      "/#" +
+        querystring.stringify({
+          error: "state_mismatch",
+        })
+    );
+  } else {
+    var authOptions = {
+      url: "https://accounts.spotify.com/api/token",
+      form: {
+        code: code,
+        redirect_uri: redirect_uri,
+        grant_type: "authorization_code",
+      },
+      headers: {
+        Authorization:
+          "Basic " +
+          new Buffer.from(client_id + ":" + client_secret).toString("base64"),
+      },
+      json: true,
+    };
+  }
 });
 
+app.get("/auth/token", (req, res) => {
+  res.json({
+    access_token: access_token,
+  });
+});
 // ==== [Socket.io] ====
 
 const io = new Server(server, {
@@ -76,6 +109,8 @@ io.on("connection", (socket) => {
 server.listen(3002, () => {
   console.log("SERVER IS RUNNING");
 });
+
+// ==== [Apollo] ====
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {

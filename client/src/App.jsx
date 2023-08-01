@@ -13,15 +13,15 @@ function App() {
   const code = new URLSearchParams(window.location.search).get("code");
 
   return code ? <Dashspot code={code} /> : <Spotify />;
-  //  (
-  //     <>
-  //       <Nav />
-  //       <Chat />
-  //       <Login />
-  //       <Signup />
-  //       <Spotify />
-  //     </>
-  //   );
+  // return (
+  //   <>
+  //     <Nav />
+  //     <Chat />
+  //     <Login />
+  //     <Signup />
+  //     <Spotify />
+  //   </>
+  // );
 }
 
 export default App;
