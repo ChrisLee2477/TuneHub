@@ -13,7 +13,6 @@ const spotifyApi = require("spotify-web-api-node");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
 
 // ==== [Env] ====
 
@@ -39,20 +38,23 @@ const client_id = "8000e5a74ec242939a1246f4295be86c"; // Your client id
 const client_secret = "0a652098d8db4e21b13c660584ad0ba0"; // Your secret
 const redirect_uri = "http://localhost:3000/callback"; // Your redirect uri
 
-app.get("/login", function (req, res) {
-  var state = generateRandomString(16);
-  var scope = "user-read-private user-read-email";
-
-  res.redirect(
-    "https://accounts.spotify.com/authorize?" +
-      querystring.stringify({
-        response_type: "code",
-        client_id: client_id,
-        scope: scope,
-        redirect_uri: redirect_uri,
-        state: state,
-      })
-  );
+app.get("/refreshtoken", async (req, res) => {
+  let refreshToken = await req.body.refresh_token;
+  const refreshParams = {
+    url: "https://accounts.spotify.com/api/token",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization:
+        "Basic " +
+        new Buffer.from(client_id + ":" + client_secret).toString("base64"),
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+      client_id: client_id,
+    }),
+  };
 });
 
 // ==== [Apollo] ====
