@@ -9,6 +9,7 @@ import {
   FaThList,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import "./Components.css";
 
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);

@@ -11,6 +11,7 @@ export default function Dashboard() {
       <header className="header">Welcome To TuneHubs!!</header>
 
       <Comment />
+
       <Spotify />
     </>
   );
