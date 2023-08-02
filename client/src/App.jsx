@@ -34,7 +34,7 @@ function App() {
     cache: new InMemoryCache(),
   });
 
-  const { _id: id } = useQuery(QUERY_USER_BY_ID);
+  const id = 45454545;
 
   return (
     <ApolloProvider client={client}>

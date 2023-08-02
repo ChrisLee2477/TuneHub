@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../utils/mutation";
 import { useNavigate } from "react-router-dom";
+import "./Components.css";
 
 // import { useHistory } from "react-router-dom";
 const Login = () => {
@@ -51,9 +52,9 @@ const Login = () => {
   }
 
   return (
-    <div>
+    <div className="div">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
           <input

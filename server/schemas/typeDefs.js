@@ -30,15 +30,16 @@ const typeDefs = `
     uri: String!
     imageUrl: String
   }
-  
   type Message {
     _id: ID
     sentBy: User
     chat: Chat
     createdTime: String
+    content: String!
   }
 
   type Chat {
+    _id:ID
     users: [User]
     messages: [Message]
   }
@@ -47,11 +48,18 @@ const typeDefs = `
     token: String!
     user: User!
   }
+  type Contact{
+    _id:ID
+    users:[User]
+  }
   type Query {
     users: [User]
     user(username: String!): User
     comments(username: String!): [Comment] 
     comment(_id: ID!): Comment
+    playlist(_id: ID): Playlist
+    me: User
+    contacts:[User]
   }
 
 type Mutation {
@@ -68,6 +76,8 @@ type Mutation {
       uri: String!
       imageUrl: String
     ): Track
+  createChat(users: [ID]): Chat
+  sendMessage(chatId: ID!, sentBy: ID!, content: String!): Message
 }
   `;
 
