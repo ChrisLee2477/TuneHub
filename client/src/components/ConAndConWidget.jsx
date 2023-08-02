@@ -4,6 +4,7 @@ import Conversations from "./Conversations";
 import Contacts from "./Contacts";
 import NewContactModal from "./newContactModal";
 import NewConversationModal from "./newConversationModal";
+import "./Components.css";
 
 const convoKey = "converstions";
 const contKey = "contacts";
@@ -18,9 +19,9 @@ function ConAndConSide({ id }) {
   }
 
   return (
-    <div style={{ width: "250px" }} className="d-flex flex-column">
+    <div style={{ width: "250px" }} className=" d-flex  flex-column ">
       <Tab.Container activeKey={activeKey} onSelect={setActiveKey}>
-        <Nav variant="tabs" className="justify-content-center">
+        <Nav variant="tabs" className="justify-content-center convo">
           <Nav.Item>
             <Nav.Link eventKey={convoKey}>Converstions</Nav.Link>
           </Nav.Item>
@@ -28,7 +29,7 @@ function ConAndConSide({ id }) {
             <Nav.Link eventKey={contKey}>Contacts</Nav.Link>
           </Nav.Item>
         </Nav>
-        <Tab.Content className="border-right overflow-auto flex-grow-1">
+        <Tab.Content className="border-right overflow-auto flex-grow-1 dash">
           <Tab.Pane eventKey={convoKey}>
             <Conversations />
           </Tab.Pane>
@@ -36,10 +37,10 @@ function ConAndConSide({ id }) {
             <Contacts />
           </Tab.Pane>
         </Tab.Content>
-        <div className="p-2 border-top border-right small">
+        <div className="p-2 border-top border-right small ">
           Your Id: <span className="text-muted">{id}</span>
         </div>
-        <Button onClick={() => setModalOpen(true)} className="rounded-0">
+        <Button onClick={() => setModalOpen(true)} className="rounded-0 ">
           New {converstionsOpen ? "Converstion" : "Contact"}
         </Button>
       </Tab.Container>
