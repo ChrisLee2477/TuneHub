@@ -45,7 +45,7 @@ function App() {
               <BrowserRouter>
                 <Sidebar>
                   <Routes>
-                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/" element={<Login />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/comment" element={<Comment />} />
                     <Route path="/spotifypage" element={<SpotifyPage />} />
