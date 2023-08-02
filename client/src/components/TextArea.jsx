@@ -1,13 +1,10 @@
-import React from "react";
-import Chat from "./Chat";
+import React, { useState } from "react";
 import ConAndConSide from "./ConAndConWidget";
-import { ContactsProvider } from "../contexts/ContactsProvider";
-import useLocalStorage from "../hook/LocalStorage";
-import { ConversationsProvider } from "../contexts/ConversationsProvider";
+import Auth from "../utils/auths";
 
 export default function Comment() {
   // const [id, setId] = useLocalStorage(id);
-  const id = 45456184841;
+  const [id, setId] = useState();
 
   const conWid = <ConAndConSide id={id} />;
   return conWid;

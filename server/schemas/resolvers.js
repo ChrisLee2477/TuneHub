@@ -19,6 +19,12 @@ const resolvers = {
     // playlist: async (parent, { playlistId }) => {
     //   return Playlist.findById(playlistId).populate("tracks");
     // },
+    me: async (parent, args, context) => {
+      if (context.user) {
+        return User.findOne({ _id: context.user._id });
+      }
+      throw AuthenticationError;
+    },
   },
   Mutation: {
     createUser: async (parent, { username, email, password }) => {

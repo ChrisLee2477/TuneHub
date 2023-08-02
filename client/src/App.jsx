@@ -18,7 +18,6 @@ import { Socket } from "socket.io-client";
 import { SocketProvider } from "./contexts/SocketProvider";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import { QUERY_USER_BY_ID } from "./utils/queries";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -34,7 +33,7 @@ function App() {
     cache: new InMemoryCache(),
   });
 
-  const id = 45454545;
+  const [id, setId] = useState("0");
 
   return (
     <ApolloProvider client={client}>
@@ -44,14 +43,14 @@ function App() {
           <ContactsProvider>
             <ConversationsProvider id={id}>
               <BrowserRouter>
-                {/* <Sidebar> */}
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/comment" element={<Comment />} />
-                  <Route path="/spotifypage" element={<SpotifyPage />} />
-                </Routes>
-                {/* </Sidebar> */}
+                <Sidebar>
+                  <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/comment" element={<Comment />} />
+                    <Route path="/spotifypage" element={<SpotifyPage />} />
+                  </Routes>
+                </Sidebar>
               </BrowserRouter>
             </ConversationsProvider>
           </ContactsProvider>

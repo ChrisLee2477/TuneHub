@@ -19,7 +19,6 @@ const Sidebar = ({ children }) => {
       name: "Dashboard",
       icon: <FaTh />,
     },
-
     {
       path: "/spotifypage",
       name: "Spotifypage",
