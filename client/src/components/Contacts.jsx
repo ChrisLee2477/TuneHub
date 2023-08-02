@@ -6,12 +6,10 @@ import "./Components.css";
 export default function Contacts() {
   const { contacts } = useContacts();
   return (
-    <div className="dash">
-      <ListGroup variant="flush">
-        {contacts.map((contact) => (
-          <ListGroup.Item key={contact.id}>{contact.name}</ListGroup.Item>
-        ))}
-      </ListGroup>
-    </div>
+    <ListGroup variant="flush">
+      {contacts.map((contact) => (
+        <ListGroup.Item key={contact.id}>{contact.name}</ListGroup.Item>
+      ))}
+    </ListGroup>
   );
 }
