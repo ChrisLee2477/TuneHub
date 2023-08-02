@@ -9,6 +9,7 @@ export default function Dashboard() {
   return (
     <>
       <header className="header">Welcome To TuneHubs!!</header>
+
       <Comment />
       <Spotify />
     </>

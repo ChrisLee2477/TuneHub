@@ -20,6 +20,7 @@
 }
 .header {
   text-align: center;
+  background-color: antiquewhite;
 }
 
 .chatroom {
@@ -29,4 +30,8 @@
   align-items: center;
   flex-direction: column;
   /* background-color: #80ced7; */
+}
+
+.dash {
+  background-color: #263d42;
 }
