@@ -74,7 +74,7 @@ const Login = () => {
             Password:
           </label>
           <input
-            className="LEMM"
+            className="lemm"
             type="password"
             id="password"
             name="password"
