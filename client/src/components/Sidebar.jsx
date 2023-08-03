@@ -13,8 +13,8 @@ const Sidebar = ({ children }) => {
       icon: <FaTh />,
     },
     {
-      path: "/spotifypage",
-      name: "Spotifypage",
+      path: "/spotify",
+      name: "Spotify",
       icon: <FaSpotify />,
     },
     {

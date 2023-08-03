@@ -1,3 +1,5 @@
+// ==== [Vars] ====
+
 const express = require("express");
 const { ApolloServer } = require("@apollo/server");
 const path = require("path");
@@ -10,8 +12,11 @@ const cors = require("cors");
 const spotifyApi = require("spotify-web-api-node");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
+const bodyParser = require("body-parser");
 
-const PORT = process.env.PORT || 3001;
+// ==== [Env] ====
+
+const PORT = process.env.PORT || 3000;
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
@@ -25,29 +30,31 @@ app.use(
 );
 const server = http.createServer(app);
 
-// Spotify Web API
+//==== [Spotify] ====
 
-app.post("/spotifylogin", async (req, res) => {
-  try {
-    const spotifyApi = new SpotifyWebApi({
-      redirectUri: "http://localhost:3000/",
-      clientId: "d67a6de2b2f045539acfef33cdff8840",
-      clientSecret: "bd98e8446154499ab7eef56762cd16f2",
-    });
+app.use(bodyParser.json());
 
-    const code = req.body.code;
+const client_id = "8000e5a74ec242939a1246f4295be86c"; // Your client id
+const client_secret = "0a652098d8db4e21b13c660584ad0ba0"; // Your secret
+const redirect_uri = "http://localhost:3000/callback"; // Your redirect uri
 
-    const data = await spotifyApi.authorizationCodeGrant(code);
-
-    res.json({
-      accessToken: data.body.access_token,
-      refreshToken: data.body.refresh_token,
-      expiresIn: data.body.expires_in,
-    });
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(400);
-  }
+app.get("/refreshtoken", async (req, res) => {
+  let refreshToken = await req.body.refresh_token;
+  const refreshParams = {
+    url: "https://accounts.spotify.com/api/token",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization:
+        "Basic " +
+        new Buffer.from(client_id + ":" + client_secret).toString("base64"),
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+      client_id: client_id,
+    }),
+  };
 });
 const io = new Server(server, {
   cors: {
