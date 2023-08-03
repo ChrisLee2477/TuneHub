@@ -43,3 +43,10 @@
 .lemm {
   background-color: lemonchiffon;
 }
+
+.home {
+  background-color: lemonchiffon;
+  position: fixed;
+  top: 15px;
+  right: 50px;
+}
