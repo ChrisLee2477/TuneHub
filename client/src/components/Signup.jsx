@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { SIGNUP_USER } from "../utils/mutation";
+import "./Components.css";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ const Signup = () => {
   };
 
   return (
-    <div>
+    <div className="form">
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div>

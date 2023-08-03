@@ -4,12 +4,18 @@ import {
   ApolloClient,
   InMemoryCache,
   createHttpLink,
+  useQuery,
 } from "@apollo/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Container, Form } from "react-bootstrap";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard.jsx";
 import Comment from "./pages/Comment.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { ConversationsProvider } from "./contexts/ConversationsProvider";
+import { ContactsProvider } from "./contexts/ContactsProvider";
+import { Socket } from "socket.io-client";
+import { SocketProvider } from "./contexts/SocketProvider";
 import Signup from "./components/Signup";
 // import Nav from "./components/Nav";
 import Login from "./components/Login";
@@ -33,6 +39,8 @@ function App() {
     link: httpLink,
     cache: new InMemoryCache(),
   });
+
+  const [id, setId] = useState("0");
 
   // ==== [Spotify Api] ====
 
@@ -127,18 +135,23 @@ function App() {
     <ApolloProvider client={client}>
       <>
         {/* other components */}
-        <BrowserRouter>
-          <Sidebar>
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/comment" element={<Comment />} />
-              <Route path="/spotify" element={<Spotify />} />
+        <SocketProvider id={id}>
+          <ContactsProvider>
+            <ConversationsProvider id={id}>
+              <BrowserRouter>
+                <Sidebar>
+                  <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/comment" element={<Comment />} />
+                    <Route path="/spotify" element={<Spotify />} />
               <Route path="/callback" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-            </Routes>
-          </Sidebar>
-        </BrowserRouter>
+                  </Routes>
+                </Sidebar>
+              </BrowserRouter>
+            </ConversationsProvider>
+          </ContactsProvider>
+        </SocketProvider>
         <Container
           className="d-flex flex-column py-2"
           style={{ height: "100vh" }}

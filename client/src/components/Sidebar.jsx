@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import {
-  FaTh,
-  FaBars,
-  FaUserAlt,
-  FaRegChartBar,
-  FaCommentAlt,
-  FaShoppingBag,
-  FaThList,
-} from "react-icons/fa";
+import { FaTh, FaBars, FaCommentAlt, FaSpotify } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import "./Components.css";
 
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,15 +12,14 @@ const Sidebar = ({ children }) => {
       name: "Dashboard",
       icon: <FaTh />,
     },
-
     {
       path: "/spotify",
       name: "Spotify",
-      icon: <FaRegChartBar />,
+      icon: <FaSpotify />,
     },
     {
       path: "/comment",
-      name: "Comment",
+      name: "Chat",
       icon: <FaCommentAlt />,
     },
   ];

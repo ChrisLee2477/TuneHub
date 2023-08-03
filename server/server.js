@@ -56,8 +56,31 @@ app.get("/refreshtoken", async (req, res) => {
     }),
   };
 });
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000/",
+    methods: ["GET", "POST"],
+  },
+});
+io.on("connection", (socket) => {
+  const id = socket.handshake.query.id;
+  socket.join(id);
 
-// ==== [Apollo] ====
+  socket.on("send_message", ({ recipients, text }) => {
+    recipients.forEach((recipient) => {
+      const newRecipients = recipients.filter((r) => r !== recipient);
+      newRecipients.push(id);
+      socket.broadcast.to(recipient).emit("receive_message", {
+        recipients: newRecipients,
+        sender: id,
+        text,
+      });
+    });
+  });
+});
+// server.listen(3001, () => {
+//   console.log("SERVER IS RUNNING");
+// });
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
