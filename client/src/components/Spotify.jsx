@@ -9,7 +9,7 @@ const AUTH_URL =
 export default function Spotify() {
   return (
     <Container
-      className="d-flex justify-content-center align-items-center form"
+      className="d-flex justify-content-center align-items-center "
       style={{ minHeight: "100vh" }}
     >
       <a className="btn btn-success btn-lg" href={AUTH_URL}>

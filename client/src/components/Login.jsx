@@ -54,10 +54,13 @@ const Login = () => {
   return (
     <div className="div">
       <form className="form" onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2 className="lemm">Login</h2>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label className="lemm" htmlFor="username">
+            Username:
+          </label>
           <input
+            className="lemm"
             type="text"
             id="username"
             name="username"
@@ -67,8 +70,11 @@ const Login = () => {
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
+          <label className="lemm" htmlFor="password">
+            Password:
+          </label>
           <input
+            className="lemm"
             type="password"
             id="password"
             name="password"
@@ -77,12 +83,17 @@ const Login = () => {
             required
           />
         </div>
-        <button onClick={(e) => logDash()} type="submit" disabled={loading}>
+        <button
+          className="lemm"
+          onClick={(e) => logDash()}
+          type="submit"
+          disabled={loading}
+        >
           Login
         </button>
         {error && <p>Error: {error.message}</p>}
 
-        <button onClick={(e) => handleClick()}>
+        <button className="lemm" onClick={(e) => handleClick()}>
           Don't have an account? Sign up :)
         </button>
       </form>
