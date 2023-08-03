@@ -16,6 +16,7 @@ Welcome to TuneHub, the ultimate music social app designed to connect you with l
 
 ## App link
 
+<img src="./client/images/webpage.png" herf="webpage img">
 https://github.com/ChrisLee2477/TuneHub/deployments/activity_log?environment=tunehubs
 
 ## Features
@@ -68,3 +69,13 @@ We welcome contributions from the TuneHub community. If you are a developer or d
 TuneHub is released under the MIT License. Feel free to use, modify, and distribute the app in accordance with the terms of the license.
 
 Let's create a harmonious community of music lovers on TuneHub! 🎶
+
+## Credits
+
+Arsalan-K-Ansari
+
+kankanrr
+
+ChrisLee2477
+
+tegaomare
