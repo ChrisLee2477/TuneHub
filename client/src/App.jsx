@@ -15,14 +15,13 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Spotify from "./components/Spotify";
 // import SpotifyDash from "./pages/SpotifyDash";
-import SpotUserAuth from "./pages/spotUserAuth";
 import { Buffer } from "buffer";
 
 function App() {
   const qString = window.location.search;
   const urlSearch = new URLSearchParams(qString);
   const code = urlSearch.get("code");
-  console.log(code);
+  // console.log(code);
 
   // Create the HTTP link to your GraphQL server
   const httpLink = createHttpLink({
@@ -44,7 +43,6 @@ function App() {
   const [accessToken, setAccessToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
   const [expiresIn, setExpiresIn] = useState("");
-  const [tokenType, setTokenType] = useState("");
 
   useEffect(() => {
     const authParams = {
@@ -61,58 +59,47 @@ function App() {
         code: code,
       }),
     };
-    async function getAuthorization() {
-      await fetch("https://accounts.spotify.com/api/token", authParams)
-        .then((result) => result.json())
-        .then((data) => {
-          console.log(data);
+    const refreshParams = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization:
+          "Basic " +
+          new Buffer.from(client_id + ":" + client_secret).toString("base64"),
+      },
+      body: new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+        client_id: client_id,
+      }),
+    };
+    fetch("https://accounts.spotify.com/api/token", authParams)
+      .then((result) => result.json())
+      .then((data) => {
+        console.log(data);
+        if (!accessToken) {
           setAccessToken(data.access_token);
-          setRefreshToken(data.refresh_token);
-          setExpiresIn(data.expires_in);
-          setTokenType(data.token_type);
-          if (accessToken) return console.log("access toke +> " + accessToken);
-          else window.history.pushState({}, null, "/");
-        })
-        .catch((err) => {
-          console.log(err);
-          res.sendStatus(400);
-        });
-    }
-    getAuthorization();
-  }, [refreshToken, accessToken, expiresIn]);
-  useEffect(() => {
-    if (!expiresIn) {
-      const refreshParams = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization:
-            "Basic " +
-            new Buffer.from(client_id + ":" + client_secret).toString("base64"),
-        },
-        body: new URLSearchParams({
-          grant_type: "refresh_token",
-          refresh_token: refreshToken,
-          client_id: client_id,
-        }),
-      };
-      async function refToken() {
-        await fetch("https://accounts.spotify.com/api/token", refreshParams)
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("check 1 > " + JSON.stringify(data));
-            setExpiresIn(data.expires_in);
-            setAccessToken(data.access_token);
-            console.log("check 2 > " + JSON.stringify(data));
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(400);
-          });
-      }
-      refToken();
-    } else return;
-  }, [expiresIn, accessToken]);
+        }
+        setRefreshToken(data.refresh_token);
+        setExpiresIn(data.expires_in);
+        if (!expiresIn) {
+          fetch("https://accounts.spotify.com/api/token", refreshParams)
+            .then((res) => res.json())
+            .then((data) => {
+              setExpiresIn(data.expires_in);
+              setAccessToken(data.access_token);
+            });
+        }
+
+        console.log(data.access_token);
+        // if (accessToken) return console.log("access toke +> " + accessToken);
+        // else window.history.pushState({}, null, "/");
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
+  }, [accessToken, refreshToken]);
 
   console.log(accessToken);
 
