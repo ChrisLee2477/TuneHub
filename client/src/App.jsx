@@ -46,6 +46,7 @@ function App() {
                 <Sidebar>
                   <Routes>
                     <Route path="/" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/comment" element={<Comment />} />
                     <Route path="/spotifypage" element={<SpotifyPage />} />
